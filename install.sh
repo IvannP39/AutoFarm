@@ -51,6 +51,7 @@ cp "$PICOCLAW_DIR/workspace/SOUL.md"      ~/.picoclaw/workspace/
 cp "$PICOCLAW_DIR/workspace/AGENTS.md"    ~/.picoclaw/workspace/
 cp "$PICOCLAW_DIR/workspace/USER.md"      ~/.picoclaw/workspace/
 cp "$PICOCLAW_DIR/workspace/HEARTBEAT.md" ~/.picoclaw/workspace/
+cp "$PICOCLAW_DIR/workspace/memory/MEMORY.md" ~/.picoclaw/workspace/memory/
 
 # Skill autofarm
 cp "$PICOCLAW_DIR/workspace/skills/autofarm/SKILL.md" \

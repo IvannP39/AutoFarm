@@ -65,6 +65,7 @@ cp ./picoclaw/workspace/SOUL.md      ~/.picoclaw/workspace/
 cp ./picoclaw/workspace/AGENTS.md    ~/.picoclaw/workspace/
 cp ./picoclaw/workspace/USER.md      ~/.picoclaw/workspace/
 cp ./picoclaw/workspace/HEARTBEAT.md ~/.picoclaw/workspace/
+cp ./picoclaw/workspace/memory/MEMORY.md ~/.picoclaw/workspace/memory/
 
 # Skill autofarm
 cp ./picoclaw/workspace/skills/autofarm/SKILL.md \
@@ -85,8 +86,8 @@ echo "# 1. Vérifier les capteurs simulés"
 echo "curl http://localhost:8080/status | python3 -m json.tool"
 echo ""
 echo "# 2. Tester un skill manuellement"
-echo "bash ~/.picoclaw/workspace/skills/autofarm/scripts/farm_control.sh status"
-echo "bash ~/.picoclaw/workspace/skills/autofarm/scripts/farm_control.sh water pulse:5"
+echo "bash ~/.picoclaw/skills/farm_control.sh status"
+echo "bash ~/.picoclaw/skills/farm_control.sh water pulse:5"
 echo ""
 echo "# 3. Lancer l'agent"
 echo "picoclaw agent -m \"Quel est l'état de la ferme ?\""
