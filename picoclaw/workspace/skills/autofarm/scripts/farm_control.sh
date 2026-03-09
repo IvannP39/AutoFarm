@@ -44,8 +44,21 @@ for a in d['last_actions']:
     echo "Lumière : $CMD"
     ;;
 
+  history)
+    SENSOR="${2:-temperature}"
+    LIMIT="${3:-20}"
+    curl -s "$API/sensors/history/$SENSOR?limit=$LIMIT" | python3 -c "
+import json, sys, datetime
+data = json.load(sys.stdin)
+print(f'--- {\"$SENSOR\"} (dernières $LIMIT valeurs) ---')
+for r in reversed(data):
+    t = datetime.datetime.fromtimestamp(r['ts']).strftime('%H:%M')
+    print(f\"{t}  {r['value']} {r['unit']}\")
+"
+    ;;
+
   *)
-    echo "Usage: $0 {status|water|fan|light} [on|off|pulse:N]"
+    echo "Usage: $0 {status|water|fan|light|history} [args]"
     exit 1
     ;;
 esac

@@ -213,6 +213,41 @@ PIN_MAP = {
 
 ---
 
+
+## TODO
+
+- Ajouter une liste de plantes avec leur profil agronomique (à ajouter dans USER.md) et faire en sorte que l'agent puisse rechercher dans la liste le profil correspondant à la plante.
+
+- Capteurs & données
+
+    - Ajouter un capteur de luminosité (BH1750) pour que l'agent gère la lumière sur la vraie donnée et pas juste l'heure
+    - Ajouter un capteur EC/pH pour l'hydroponie — c'est souvent plus critique que la température
+    - Historique long terme avec agrégation horaire/journalière (SQLite suffit) pour que l'agent détecte des tendances sur plusieurs jours
+
+- Intelligence de l'agent
+
+    - Donner accès à l'heure et à la météo locale (via l'API Brave ou Open-Meteo gratuite) — une pluie prévue change la décision d'arroser (pas besoin si serre intérieur)
+    - Journal de croissance : l'agent note ses observations à chaque heartbeat, ce qui lui permet de comparer l'état d'aujourd'hui à celui d'il y a 3 jours
+    - Multi-plantes : une zone par plante avec son profil, ses capteurs dédiés et son actionneur
+
+- Fiabilité
+
+    - Watchdog : un cron qui vérifie que picoclaw gateway tourne toujours et le redémarre sinon
+    - Alertes de capteur mort : si un capteur n'envoie plus de données depuis N minutes, l'agent le signale au lieu de raisonner sur des données périmées
+    - Timestamp dans les décisions loggées dans MEMORY.md — pour l'instant l'agent écrit sans dater
+    - Faire en sorte que l'agent puisse lire les valeurs dans le db et pas seulement via l'API
+
+- Interface
+
+    - Dashboard web minimaliste (une page HTML servie par farm-api) avec les valeurs en temps réel et l'historique en graphique — utile pour déboguer sans Telegram
+    - Commande Telegram /photo si tu ajoutes une caméra (MaixCAM par exemple) — l'agent peut alors faire du diagnostic visuel
+
+- Déploiement
+
+    - Script de mise à jour (update.sh) qui pull le repo, recopie les fichiers workspace et redémarre les services sans tout recasser
+    - Backup automatique de MEMORY.md et de la base SQLite vers un dossier partagé ou un repo git privé
+
+
 ## Dépendances notables
 
 | Lib | Usage |
