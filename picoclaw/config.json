@@ -1,0 +1,37 @@
+{
+    "agents": {
+        "defaults": {
+            "workspace": "/home/pi/.picoclaw/workspace",
+            "model": "${LLM_MODEL}",
+            "max_tokens": 2048,
+            "temperature": 0.3,
+            "max_tool_iterations": 10,
+            "restrict_to_workspace": true
+        }
+    },
+    "model_list": [
+        {
+            "model_name": "${LLM_MODEL}",
+            "model": "${LLM_MODEL}",
+            "api_base": "https://openrouter.ai/api/v1",
+            "api_key": "${LLM_API_KEY}"
+        }
+    ],
+    "channels": {
+        "telegram": {
+            "enabled": false,
+            "token": "${TELEGRAM_TOKEN}",
+            "allow_from": [
+                "${TELEGRAM_USER_ID}"
+            ]
+        }
+    },
+    "tools": {
+        "web": {
+            "duckduckgo": {
+                "enabled": true,
+                "max_results": 5
+            }
+        }
+    }
+}

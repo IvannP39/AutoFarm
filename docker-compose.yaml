@@ -1,0 +1,34 @@
+# docker-compose.yml
+# Les services Python tournent en Docker, picoclaw tourne en natif (voir install.sh)
+
+services:
+  farm-api:
+    build: ./farm-api
+    container_name: farm-api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - farm-data:/data
+      - /dev:/dev # accès GPIO si besoin
+    environment:
+      - DB_PATH=/data/farm.db
+      - SECRET_KEY=${SECRET_KEY}
+    devices:
+      - /dev/gpiomem:/dev/gpiomem # GPIO Raspberry Pi
+
+  sensor-loop:
+    build: ./sensor-loop
+    container_name: sensor-loop
+    restart: unless-stopped
+    depends_on:
+      - farm-api
+    environment:
+      - API_URL=http://farm-api:8080
+      - POLL_INTERVAL=${POLL_INTERVAL:-30}
+    devices:
+      - /dev/i2c-1:/dev/i2c-1 # capteurs I2C
+    privileged: false
+
+volumes:
+  farm-data:
