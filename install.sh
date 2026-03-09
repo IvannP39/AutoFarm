@@ -35,18 +35,30 @@ if ! command -v picoclaw &>/dev/null; then
 fi
 
 # ── 4. Config PicoClaw ────────────────────────────────────────────────────────
-mkdir -p ~/.picoclaw/workspace
+mkdir -p ~/.picoclaw/workspace/skills/autofarm/scripts
+mkdir -p ~/.picoclaw/workspace/memory
 PICOCLAW_DIR="$(pwd)/picoclaw"
 
 # Substitution des variables d'environnement dans config.json
 if [ -f .env ]; then
-  export $(grep -v '^#' .env | xargs)
+  export $(grep -v '^#' .env | grep '=' | sed 's/#.*//' | xargs)
 fi
 envsubst < "$PICOCLAW_DIR/config.json" > ~/.picoclaw/config.json
 
-# Copier les skills
-cp -r "$PICOCLAW_DIR/skills" ~/.picoclaw/
-chmod +x ~/.picoclaw/skills/*.sh
+# Workspace : fichiers contexte (lus à chaque message)
+cp "$PICOCLAW_DIR/workspace/IDENTITY.md"  ~/.picoclaw/workspace/
+cp "$PICOCLAW_DIR/workspace/SOUL.md"      ~/.picoclaw/workspace/
+cp "$PICOCLAW_DIR/workspace/AGENTS.md"    ~/.picoclaw/workspace/
+cp "$PICOCLAW_DIR/workspace/USER.md"      ~/.picoclaw/workspace/
+cp "$PICOCLAW_DIR/workspace/HEARTBEAT.md" ~/.picoclaw/workspace/
+
+# Skill autofarm
+cp "$PICOCLAW_DIR/workspace/skills/autofarm/SKILL.md" \
+   ~/.picoclaw/workspace/skills/autofarm/
+cp "$PICOCLAW_DIR/workspace/skills/autofarm/scripts/farm_control.sh" \
+   ~/.picoclaw/workspace/skills/autofarm/scripts/
+chmod +x ~/.picoclaw/workspace/skills/autofarm/scripts/farm_control.sh
+
 echo "✓ PicoClaw configuré"
 
 # ── 5. Service systemd pour picoclaw gateway (optionnel, si Telegram activé) ─
@@ -74,7 +86,8 @@ echo ""
 echo "✅ Installation terminée !"
 echo ""
 echo "Commandes utiles :"
-echo "  picoclaw agent -m 'Status de la ferme ?'"
+echo "  picoclaw agent -m 'Comment va la ferme ?'"
 echo "  picoclaw agent -m 'Arrose pendant 10 secondes'"
+echo "  bash ~/.picoclaw/workspace/skills/autofarm/scripts/farm_control.sh status"
 echo "  docker compose logs -f"
 echo "  curl http://localhost:8080/status"

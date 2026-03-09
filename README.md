@@ -31,6 +31,7 @@ Capteurs (DHT22, sol...) → sensor-loop → farm-api (SQLite)
 ```
 Autofarm/
 ├── docker-compose.yml
+├── docker-compose.pi.yml       ← overlay GPIO pour le Pi
 ├── .env                        ← à créer depuis .env.example
 ├── install.sh                  ← déploiement Pi
 ├── dev-setup.sh                ← test local WSL/Linux
@@ -43,9 +44,18 @@ Autofarm/
 │   ├── sensors.py
 │   └── requirements.txt
 └── picoclaw/
-    ├── config.json             ← config de l'agent
-    └── skills/
-        └── farm_control.sh    ← outils exposés à l'agent
+    ├── config.json
+    └── workspace/              ← copié dans ~/.picoclaw/workspace/
+        ├── IDENTITY.md         ← qui est l'agent (lu à chaque message)
+        ├── SOUL.md             ← personnalité
+        ├── AGENTS.md           ← règles + seuils d'alerte
+        ├── USER.md             ← contexte ferme + matériel
+        ├── HEARTBEAT.md        ← surveillance automatique toutes les 30min
+        └── skills/
+            └── autofarm/
+                ├── SKILL.md                ← décrit les outils à l'agent
+                └── scripts/
+                    └── farm_control.sh
 ```
 
 ---

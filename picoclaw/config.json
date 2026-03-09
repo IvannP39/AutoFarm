@@ -1,7 +1,7 @@
 {
     "agents": {
         "defaults": {
-            "workspace": "/home/pi/.picoclaw/workspace",
+            "workspace": "~/.picoclaw/workspace",
             "model": "${LLM_MODEL}",
             "max_tokens": 2048,
             "temperature": 0.3,
@@ -12,14 +12,14 @@
     "model_list": [
         {
             "model_name": "${LLM_MODEL}",
-            "model": "${LLM_MODEL}",
+            "model": "openrouter/${LLM_MODEL}",
             "api_base": "https://openrouter.ai/api/v1",
             "api_key": "${LLM_API_KEY}"
         }
     ],
     "channels": {
         "telegram": {
-            "enabled": false,
+            "enabled": true,
             "token": "${TELEGRAM_TOKEN}",
             "allow_from": [
                 "${TELEGRAM_USER_ID}"
@@ -33,5 +33,9 @@
                 "max_results": 5
             }
         }
+    },
+    "heartbeat": {
+        "enabled": true,
+        "interval": 30
     }
 }
