@@ -10,12 +10,10 @@ services:
       - "8080:8080"
     volumes:
       - farm-data:/data
-      - /dev:/dev # accès GPIO si besoin
     environment:
       - DB_PATH=/data/farm.db
       - SECRET_KEY=${SECRET_KEY}
-    devices:
-      - /dev/gpiomem:/dev/gpiomem # GPIO Raspberry Pi
+      - DEV_MODE=${DEV_MODE:-false}
 
   sensor-loop:
     build: ./sensor-loop
@@ -26,9 +24,6 @@ services:
     environment:
       - API_URL=http://farm-api:8080
       - POLL_INTERVAL=${POLL_INTERVAL:-30}
-    devices:
-      - /dev/i2c-1:/dev/i2c-1 # capteurs I2C
-    privileged: false
 
 volumes:
   farm-data:

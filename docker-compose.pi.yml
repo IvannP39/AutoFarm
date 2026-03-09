@@ -1,0 +1,11 @@
+# Overlay Pi — utilisé seulement en production
+# Usage : docker compose -f docker-compose.yml -f docker-compose.pi.yml up -d
+
+services:
+  farm-api:
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
+
+  sensor-loop:
+    devices:
+      - /dev/i2c-1:/dev/i2c-1

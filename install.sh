@@ -14,7 +14,7 @@ fi
 
 # ── 2. Services Python (Docker Compose) ──────────────────────────────────────
 echo "→ Build & démarrage des services Docker..."
-docker compose up -d --build
+docker compose -f docker-compose.yml -f docker-compose.pi.yml up -d --build
 echo "✓ farm-api sur http://localhost:8080"
 
 # ── 3. PicoClaw (binaire natif ARM64) ────────────────────────────────────────
