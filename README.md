@@ -38,7 +38,13 @@ Autofarm/
 ├── farm-api/
 │   ├── Dockerfile
 │   ├── main.py
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── static/                 ← dashboard web (HTML/CSS/JS)
+│       ├── index.html
+│       ├── css/
+│       │   └── dashboard.css
+│       └── js/
+│           └── dashboard.js
 ├── sensor-loop/
 │   ├── Dockerfile
 │   ├── sensors.py
@@ -48,8 +54,8 @@ Autofarm/
     └── workspace/              ← copié dans ~/.picoclaw/workspace/
         ├── IDENTITY.md         ← qui est l'agent (lu à chaque message)
         ├── SOUL.md             ← personnalité
-        ├── AGENTS.md           ← règles + seuils d'alerte
-        ├── USER.md             ← contexte ferme + matériel
+        ├── AGENTS.md           ← règles + processus de décision
+        ├── USER.md             ← contexte ferme + catalogue plantes
         ├── HEARTBEAT.md        ← surveillance automatique toutes les 30min
         └── skills/
             └── autofarm/
@@ -175,8 +181,10 @@ picoclaw gateway
 | `POST` | `/sensors` | Envoyer une lecture capteur |
 | `GET` | `/sensors/latest` | Dernière valeur de chaque capteur |
 | `GET` | `/sensors/history/{sensor}` | Historique d'un capteur |
+| `GET` | `/sensors/history/all` | Historique de tous les capteurs (dashboard) |
 | `POST` | `/actuators` | Déclencher un actionneur |
 | `GET` | `/actuators/history` | Historique des actions |
+| `GET` | `/dashboard` | Dashboard web temps réel |
 
 Exemple :
 ```bash
@@ -216,8 +224,6 @@ PIN_MAP = {
 
 ## TODO
 
-- Ajouter une liste de plantes avec leur profil agronomique (à ajouter dans USER.md) et faire en sorte que l'agent puisse rechercher dans la liste le profil correspondant à la plante.
-
 - Capteurs & données
 
     - Ajouter un capteur de luminosité (BH1750) pour que l'agent gère la lumière sur la vraie donnée et pas juste l'heure
@@ -228,18 +234,15 @@ PIN_MAP = {
 
     - Donner accès à l'heure et à la météo locale (via l'API Brave ou Open-Meteo gratuite) — une pluie prévue change la décision d'arroser (pas besoin si serre intérieur)
     - Journal de croissance : l'agent note ses observations à chaque heartbeat, ce qui lui permet de comparer l'état d'aujourd'hui à celui d'il y a 3 jours
-    - Multi-plantes : une zone par plante avec son profil, ses capteurs dédiés et son actionneur
 
 - Fiabilité
 
     - Watchdog : un cron qui vérifie que picoclaw gateway tourne toujours et le redémarre sinon
     - Alertes de capteur mort : si un capteur n'envoie plus de données depuis N minutes, l'agent le signale au lieu de raisonner sur des données périmées
-    - Timestamp dans les décisions loggées dans MEMORY.md — pour l'instant l'agent écrit sans dater
     - Faire en sorte que l'agent puisse lire les valeurs dans le db et pas seulement via l'API
 
 - Interface
 
-    - Dashboard web minimaliste (une page HTML servie par farm-api) avec les valeurs en temps réel et l'historique en graphique — utile pour déboguer sans Telegram
     - Commande Telegram /photo si tu ajoutes une caméra (MaixCAM par exemple) — l'agent peut alors faire du diagnostic visuel
 
 - Déploiement

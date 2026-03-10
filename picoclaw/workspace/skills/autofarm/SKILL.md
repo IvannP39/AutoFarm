@@ -1,6 +1,6 @@
 ---
 name: autofarm
-description: Contrôle de la ferme autonome — lecture des capteurs et pilotage des actionneurs (pompe, ventilateur, lumière) via l'API locale
+description: Contrôle de la ferme autonome — lecture des capteurs, pilotage des actionneurs et consultation du profil agronomique de la plante active
 ---
 
 # AutoFarm Skill
@@ -49,9 +49,26 @@ bash skills/autofarm/scripts/farm_control.sh light on
 bash skills/autofarm/scripts/farm_control.sh light off
 ```
 
-## Exemples de décisions
+## Profil plante
 
-- Sol sec (< 25%) → `water pulse:10`
-- Température > 35°C → `fan on`
-- Nuit (après 22h) → `light off`
-- Matin (7h) → `light on`
+Avant toute décision, **consulter le profil de la plante active** dans `USER.md` :
+
+1. Lire la section **« ⚡ Plante active »** pour connaître la plante en cours
+2. Chercher la section correspondante dans le **« 🌿 Catalogue de plantes »**
+3. Utiliser les seuils du profil (température, humidité air, humidité sol, lumière) pour évaluer les données capteurs
+4. Adapter la durée de `pulse` selon le champ **« Arrosage type »** du profil
+
+> **Important** : ne pas appliquer de seuils fixes — chaque plante a des besoins différents.
+> Un sol à 40% est critique pour une laitue mais acceptable pour un piment.
+
+## Exemples de décisions (relatifs au profil)
+
+- Sol en dessous du minimum du profil → `water pulse:N` (N selon « Arrosage type »)
+- Température au-dessus du max du profil → `fan on`
+- Heure tardive (> 22h) et lumière encore allumée → `light off`
+- Matin (7h) et plante a besoin de lumière → `light on`
+
+## Dashboard
+
+Un dashboard visuel est disponible à http://localhost:8080/dashboard
+pour vérifier les valeurs en temps réel et l'historique en graphique.

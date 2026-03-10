@@ -2,11 +2,18 @@
 farm-api — API REST simple pour la ferme autonome
 Endpoints consommés par sensor-loop ET picoclaw
 """
+from pathlib import Path
+
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-import sqlite3, os, time
+import sqlite3
+import os
+import time
 
 DB = os.getenv("DB_PATH", "/data/farm.db")
+BASE_DIR = Path(__file__).resolve().parent
 app = FastAPI(title="AutoFarm API")
 
 # ── Init DB ──────────────────────────────────────────────────────────────────
@@ -103,6 +110,44 @@ def status():
     latest = get_latest()
     history = get_action_history(5)
     return {"sensors": latest, "last_actions": history, "ts": int(time.time())}
+
+
+# ── Dashboard ─────────────────────────────────────────────────────────────────
+# Fichiers statiques (CSS, JS, images) servis depuis /static/
+app.mount(
+    "/static",
+    StaticFiles(directory=str(BASE_DIR / "static")),
+    name="static",
+)
+
+
+@app.get("/dashboard")
+def dashboard():
+    """Sert le dashboard — redirige vers le fichier index.html statique."""
+    return FileResponse(
+        str(BASE_DIR / "static" / "index.html"),
+        media_type="text/html",
+    )
+
+
+@app.get("/sensors/history/all")
+def get_all_history(limit: int = 50):
+    """Historique de tous les capteurs en un seul appel — utilisé par le dashboard."""
+    with get_db() as db:
+        # Récupérer les noms de capteurs distincts
+        sensors = db.execute(
+            "SELECT DISTINCT sensor FROM readings"
+        ).fetchall()
+        result = {}
+        for row in sensors:
+            sensor_name = row["sensor"]
+            readings = db.execute(
+                "SELECT value, unit, ts FROM readings "
+                "WHERE sensor=? ORDER BY ts DESC LIMIT ?",
+                (sensor_name, limit)
+            ).fetchall()
+            result[sensor_name] = [dict(r) for r in readings]
+    return result
 
 # ── Contrôle GPIO ─────────────────────────────────────────────────────────────
 def _execute_action(actuator: str, command: str):
