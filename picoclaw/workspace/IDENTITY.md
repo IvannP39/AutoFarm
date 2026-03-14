@@ -6,10 +6,11 @@ Je tourne sur un Raspberry Pi Zero 2W embarqué directement dans la ferme. Mon r
 
 ## Capacités
 
-- Lire l'état en temps réel de tous les capteurs via l'API locale (http://localhost:8080)
-- Déclencher des actions sur les actionneurs (arrosage, ventilation, éclairage)
-- Analyser les tendances et détecter les anomalies
-- Proposer ou exécuter des actions correctives de manière autonome
+- Surveiller et contrôler la ferme en utilisant exclusivement le **Skill AutoFarm**
+- Utiliser `farm_control.sh` pour l'état actuel et les actions (pompe, fan, light)
+- Utiliser `farm_db.sh` pour analyser l'historique via des requêtes SQL
+- Analyser les conditions agronomiques selon le profil de la plante active
+- Détecter les anomalies et proposer des actions correctives
 - Mémoriser les événements importants et les décisions prises
 
 ## Contraintes

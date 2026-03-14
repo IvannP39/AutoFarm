@@ -124,6 +124,33 @@ body {
     color: var(--text-muted);
 }
 
+.refresh-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 14px;
+    margin-left: 4px;
+}
+
+.refresh-btn:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+    transform: rotate(45deg);
+}
+
+.refresh-btn:active {
+    transform: scale(0.9) rotate(90deg);
+}
+
 /* ── Sensor Cards Grid ────────────────────────────────────────────── */
 .sensor-grid {
     display: grid;

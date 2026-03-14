@@ -15,8 +15,9 @@
   - Pompe à eau : relais sur GPIO 17
   - Ventilateur : relais sur GPIO 27
   - Lumière LED : relais sur GPIO 22
-- **API locale** : http://localhost:8080 (farm-api Docker)
-- **Dashboard** : http://localhost:8080/dashboard (visualisation temps réel)
+- **Contrôle** : Via le Skill AutoFarm (scripts shell)
+- **API (Interne)** : Gérée par Docker (accessible via skills ou alors vérifie la doc de l'api local si tu veux faire des commandes curl)
+- **Dashboard** : Interface utilisateur (non-utilisable par l'agent)
 
 ---
 

@@ -5,49 +5,59 @@ description: Contrôle de la ferme autonome — lecture des capteurs, pilotage d
 
 # AutoFarm Skill
 
-Ce skill expose les outils de contrôle de la ferme via un script shell.
-Tous les appels passent par l'API REST locale sur http://localhost:8080.
+Ce skill expose les outils de contrôle de la ferme via deux scripts obligatoires :
+1. `farm_control.sh` : Pour l'état actuel (temps réel) et les actions (pompe, ventilateur, lumière).
+2. `farm_db.sh` : Pour l'analyse de l'historique et des statistiques via SQL.
 
 ## Utilisation
 
-Utilise l'outil `exec` avec la commande suivante :
+Utilise l'outil `exec` avec les commandes suivantes.
+Attention : ne pas utiliser `cd`. Les chemins sont relatifs à la racine du workspace.
 
-```
-bash skills/autofarm/scripts/farm_control.sh <commande> [argument]
-```
-
-## Commandes disponibles
-
-### `status`
-Affiche l'état complet de la ferme (tous les capteurs + dernières actions).
-```
+### État de la ferme
+```bash
 bash skills/autofarm/scripts/farm_control.sh status
 ```
 
-### `water [commande]`
-Contrôle la pompe à eau.
-- `pulse:N` — arrose pendant N secondes puis s'arrête (recommandé)
-- `on` — allume en continu (attention)
-- `off` — éteint
-
+### Arrosage (Pump)
+- `pulse:N` — arrose pendant N secondes
+- `on` / `off` — contrôle manuel
 ```bash
 bash skills/autofarm/scripts/farm_control.sh water pulse:10
-bash skills/autofarm/scripts/farm_control.sh water off
 ```
 
-### `fan [on|off]`
-Contrôle le ventilateur.
+### Ventilation (Fan)
 ```bash
 bash skills/autofarm/scripts/farm_control.sh fan on
 bash skills/autofarm/scripts/farm_control.sh fan off
 ```
 
-### `light [on|off]`
-Contrôle l'éclairage.
+### Éclairage (Light)
 ```bash
 bash skills/autofarm/scripts/farm_control.sh light on
 bash skills/autofarm/scripts/farm_control.sh light off
 ```
+
+### Historique API
+```bash
+bash skills/autofarm/scripts/farm_control.sh history temperature 20
+```
+
+## 📊 Intelligence de Données (SQL)
+
+Tu as un accès direct à la base SQLite via `bash skills/autofarm/scripts/farm_db.sh query "<requête SQL>"`.
+**Tu es encouragé à écrire tes propres requêtes SQL** pour analyser finement la ferme.
+
+### Schéma de la base
+- **Table `readings`** : `sensor` (temp, humidity, soil_moisture), `value`, `unit`, `ts` (UNIX)
+- **Table `actions`** : `actuator` (pump, fan, light), `command`, `source`, `ts` (UNIX)
+
+### Aide mémoire SQL
+- Temps : `strftime('%s','now')`
+- Conversion : `datetime(ts, 'unixepoch', 'localtime')`
+
+> [!IMPORTANT]
+> Utilise uniquement des `SELECT`. Justifie tes décisions par la donnée.
 
 ## Profil plante
 

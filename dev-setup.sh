@@ -56,6 +56,8 @@ echo "✓ PicoClaw $(picoclaw --version 2>/dev/null || echo 'installé')"
 mkdir -p ~/.picoclaw/workspace/skills/autofarm/scripts
 mkdir -p ~/.picoclaw/workspace/memory
 
+mkdir -p ~/.picoclaw/workspace/data
+
 # Config
 envsubst < ./picoclaw/config.json > ~/.picoclaw/config.json
 
@@ -65,14 +67,15 @@ cp ./picoclaw/workspace/SOUL.md      ~/.picoclaw/workspace/
 cp ./picoclaw/workspace/AGENTS.md    ~/.picoclaw/workspace/
 cp ./picoclaw/workspace/USER.md      ~/.picoclaw/workspace/
 cp ./picoclaw/workspace/HEARTBEAT.md ~/.picoclaw/workspace/
-cp ./picoclaw/workspace/memory/MEMORY.md ~/.picoclaw/workspace/memory/
+# Optionnel : MEMORY.md (ne pas écraser si l'utilisateur a déjà des souvenirs ?)
+cp -n ./picoclaw/workspace/memory/MEMORY.md ~/.picoclaw/workspace/memory/ 2>/dev/null || true
 
 # Skill autofarm
 cp ./picoclaw/workspace/skills/autofarm/SKILL.md \
    ~/.picoclaw/workspace/skills/autofarm/
-cp ./picoclaw/workspace/skills/autofarm/scripts/farm_control.sh \
+cp ./picoclaw/workspace/skills/autofarm/scripts/*.sh \
    ~/.picoclaw/workspace/skills/autofarm/scripts/
-chmod +x ~/.picoclaw/workspace/skills/autofarm/scripts/farm_control.sh
+chmod +x ~/.picoclaw/workspace/skills/autofarm/scripts/*.sh
 
 echo "✓ Workspace PicoClaw configuré"
 

@@ -6,7 +6,7 @@
             "max_tokens": 2048,
             "temperature": 0.3,
             "max_tool_iterations": 10,
-            "restrict_to_workspace": true
+            "restrict_to_workspace": false
         }
     },
     "model_list": [
@@ -27,6 +27,10 @@
         }
     },
     "tools": {
+        "exec": {
+            "enabled": true,
+            "working_dir": "~/.picoclaw/workspace"
+        },
         "web": {
             "duckduckgo": {
                 "enabled": true,

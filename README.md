@@ -9,8 +9,8 @@ L'agent lit les capteurs, prend des décisions et contrôle les actionneurs (pom
 ## Architecture
 
 ```
-Capteurs (DHT22, sol...) → sensor-loop → farm-api (SQLite)
-                                              ↑
+Capteurs (DHT22, sol...) → sensor-loop → farm-api (SQLite @ Workspace)
+                                               ↑           ↕
                           PicoClaw (agent) ←→ farm-api → GPIO (pompe, fan...)
                                ↑
                            Telegram / CLI
@@ -57,11 +57,14 @@ Autofarm/
         ├── AGENTS.md           ← règles + processus de décision
         ├── USER.md             ← contexte ferme + catalogue plantes
         ├── HEARTBEAT.md        ← surveillance automatique toutes les 30min
+        ├── data/
+        │   └── farm.db         ← La base de données (partagée avec l'API)
         └── skills/
             └── autofarm/
                 ├── SKILL.md                ← décrit les outils à l'agent
                 └── scripts/
-                    └── farm_control.sh
+                    ├── farm_control.sh     ← pilotage via API
+                    └── farm_db.sh          ← lecture directe SQL
 ```
 
 ---
@@ -239,16 +242,11 @@ PIN_MAP = {
 
     - Watchdog : un cron qui vérifie que picoclaw gateway tourne toujours et le redémarre sinon
     - Alertes de capteur mort : si un capteur n'envoie plus de données depuis N minutes, l'agent le signale au lieu de raisonner sur des données périmées
-    - Faire en sorte que l'agent puisse lire les valeurs dans le db et pas seulement via l'API
 
 - Interface
-
-    - dashboard refresh aitpmatique
     - Commande Telegram /photo si tu ajoutes une caméra (MaixCAM par exemple) — l'agent peut alors faire du diagnostic visuel
 
 - Déploiement
-
-    - Script de mise à jour (update.sh) qui pull le repo, recopie les fichiers workspace et redémarre les services sans tout recasser
     - Backup automatique de MEMORY.md et de la base SQLite vers un dossier partagé ou un repo git privé
 
 

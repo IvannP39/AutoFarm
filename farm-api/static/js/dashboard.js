@@ -375,6 +375,21 @@ document.querySelectorAll('.chart-period button').forEach(btn => {
     });
 });
 
+// Manual refresh button
+document.getElementById('refreshBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('refreshBtn');
+    btn.style.opacity = '0.5';
+    btn.style.pointerEvents = 'none';
+    
+    await fetchStatus();
+    await loadHistory(currentLimit);
+    
+    setTimeout(() => {
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'auto';
+    }, 500);
+});
+
 // ══════════════════════════════════════════════════════════════════════
 // Init & Polling
 // ══════════════════════════════════════════════════════════════════════

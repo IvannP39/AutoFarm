@@ -36,8 +36,7 @@ fi
 
 # ── 4. Config PicoClaw ────────────────────────────────────────────────────────
 mkdir -p ~/.picoclaw/workspace/skills/autofarm/scripts
-mkdir -p ~/.picoclaw/workspace/memory
-PICOCLAW_DIR="$(pwd)/picoclaw"
+mkdir -p ~/.picoclaw/workspace/data
 
 # Substitution des variables d'environnement dans config.json
 if [ -f .env ]; then
@@ -56,14 +55,14 @@ cp "$PICOCLAW_DIR/workspace/memory/MEMORY.md" ~/.picoclaw/workspace/memory/
 # Skill autofarm
 cp "$PICOCLAW_DIR/workspace/skills/autofarm/SKILL.md" \
    ~/.picoclaw/workspace/skills/autofarm/
-cp "$PICOCLAW_DIR/workspace/skills/autofarm/scripts/farm_control.sh" \
+cp "$PICOCLAW_DIR/workspace/skills/autofarm/scripts/"*.sh \
    ~/.picoclaw/workspace/skills/autofarm/scripts/
-chmod +x ~/.picoclaw/workspace/skills/autofarm/scripts/farm_control.sh
+chmod +x ~/.picoclaw/workspace/skills/autofarm/scripts/*.sh
 
 echo "✓ PicoClaw configuré"
 
 # ── 5. Service systemd pour picoclaw gateway (optionnel, si Telegram activé) ─
-if [ -n "$TELEGRAM_TOKEN" ]; then
+if [ -n "$TELEGRAM_TOKEN" ]; then 
   sudo tee /etc/systemd/system/picoclaw.service > /dev/null <<EOF
 [Unit]
 Description=PicoClaw AI Agent
