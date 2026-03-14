@@ -243,6 +243,7 @@ PIN_MAP = {
 
 - Interface
 
+    - dashboard refresh aitpmatique
     - Commande Telegram /photo si tu ajoutes une caméra (MaixCAM par exemple) — l'agent peut alors faire du diagnostic visuel
 
 - Déploiement
