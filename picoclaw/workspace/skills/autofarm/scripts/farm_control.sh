@@ -57,6 +57,21 @@ for r in reversed(data):
 "
     ;;
 
+  raw)
+    # raw METHOD ENDPOINT [JSON_DATA]
+    METHOD="${2:-GET}"
+    ENDPOINT="${3:-/status}"
+    DATA="$4"
+    if [ -n "$DATA" ]; then
+      curl -s -X "$METHOD" "$API$ENDPOINT" \
+        -H "Content-Type: application/json" \
+        -d "$DATA"
+    else
+      curl -s -X "$METHOD" "$API$ENDPOINT"
+    fi
+    echo "" # Add a newline for readability
+    ;;
+
   *)
     echo "Usage: $0 {status|water|fan|light|history} [args]"
     exit 1

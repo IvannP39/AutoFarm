@@ -10,5 +10,5 @@ Toutes les 30 minutes, exécuter la surveillance automatique :
    - Y a-t-il une combinaison de facteurs qui annonce un problème ?
    - Une action récente a-t-elle eu l'effet attendu ?
 4. Agir si nécessaire, en expliquant brièvement le raisonnement dans MEMORY.md
-5. Si tout va bien : ne rien faire, ne rien envoyer
+5. Si tout va bien : ne rien faire, mais envoyer le résumé par Telegram si disponibles
 6. Si action prise ou situation préoccupante : envoyer un message Telegram concis

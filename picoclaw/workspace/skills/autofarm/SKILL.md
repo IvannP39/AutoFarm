@@ -43,6 +43,30 @@ bash skills/autofarm/scripts/farm_control.sh light off
 bash skills/autofarm/scripts/farm_control.sh history temperature 20
 ```
 
+### Requêtes Brutes (Avancé)
+En cas de besoin spécifique non couvert par les commandes ci-dessus, tu peux utiliser la commande `raw` pour interroger directement l'API REST locale (`http://localhost:8080`).
+
+**Usage :** `bash skills/autofarm/scripts/farm_control.sh raw <METHOD> <ENDPOINT> ['<JSON_DATA>']`
+
+#### 📖 Référence de l'API REST
+
+| Endpoint | Méthode | Description | Payload (JSON) |
+| :--- | :--- | :--- | :--- |
+| `/status` | `GET` | Résumé complet (capteurs + actions) | - |
+| `/sensors/latest` | `GET` | Dernières valeurs de chaque capteur | - |
+| `/sensors/history/{name}` | `GET` | Historique pour un capteur (`temperature`, `humidity`, `soil_moisture`) | - |
+| `/actuators` | `POST` | Déclenche un actionneur | `{"actuator": "fan"\|"pump"\|"light", "command": "on"\|"off"\|"pulse:N", "source": "agent"}` |
+| `/actuators/history` | `GET` | Liste des dernières actions effectuées | - |
+
+**Exemples :**
+```bash
+# Vérifier l'historique des actions
+bash skills/autofarm/scripts/farm_control.sh raw GET /actuators/history
+
+# Allumer le ventilateur via l'API
+bash skills/autofarm/scripts/farm_control.sh raw POST /actuators '{"actuator":"fan","command":"on","source":"agent"}'
+```
+
 ## 📊 Intelligence de Données (SQL)
 
 Tu as un accès direct à la base SQLite via `bash skills/autofarm/scripts/farm_db.sh query "<requête SQL>"`.
